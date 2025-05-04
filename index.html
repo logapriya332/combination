@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spark Matcher</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            inter: ['Inter', 'sans-serif']
+          },
+          backgroundImage: {
+            'fashion-bg': "url('https://i.pinimg.com/736x/0e/05/90/0e05905b06375a5efbf89243801f56b0.jpg')"
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-fashion-bg bg-cover bg-center min-h-screen flex items-center justify-center font-inter relative">
+  <!-- Overlay -->
+  <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+
+  <!-- Main Content -->
+  <div class="relative z-10 bg-white bg-opacity-90 p-8 rounded-2xl shadow-2xl w-full max-w-lg">
+    <h1 class="text-3xl font-extrabold text-center text-gray-800 mb-6">✨ Spark Matcher</h1>
+    
+    <label class="block mb-2 text-lg font-semibold text-gray-700">Enter Shirt Color</label>
+    <input id="shirtColorInput" type="text" list="shirtColors"
+      placeholder="e.g. White, Black, Blue..." 
+      class="w-full p-3 border-2 border-gray-300 rounded-xl mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"/>
+    
+    <datalist id="shirtColors">
+      <option value="White">
+      <option value="Black">
+      <option value="Blue">
+      <option value="Red">
+      <option value="Green">
+      <option value="Yellow">
+      <option value="Grey">
+      <option value="Pink">
+      <option value="Maroon">
+      <option value="Orange">
+      <option value="Brown">
+      <option value="Sky Blue">
+      <option value="Navy Blue">
+      <option value="Olive">
+      <option value="Lavender">
+      <option value="Teal">
+      <option value="Beige">
+      <option value="Purple">
+      <option value="Turquoise">
+      <option value="Cream">
+    </datalist>
+    
+    <button onclick="getCombination()" class="w-full bg-blue-600 text-white font-semibold py-3 rounded-xl hover:bg-blue-700 transition">
+      🎯 Show Matching Outfit
+    </button>
+
+    <div id="result" class="mt-8 space-y-4 hidden">
+      <div class="flex items-center gap-2">
+        <span class="text-lg font-bold text-gray-700">👖 Pant:</span>
+        <span id="pantColor" class="text-gray-800 font-medium"></span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-lg font-bold text-gray-700">⌚ Watch:</span>
+        <span id="watchColorType" class="text-gray-800 font-medium"></span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-lg font-bold text-gray-700">⛓️ Chain:</span>
+        <span id="chainColor" class="text-gray-800 font-medium"></span>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="text-lg font-bold text-gray-700">👟 Shoes:</span>
+        <span id="shoes" class="text-gray-800 font-medium"></span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const combinations = {
+      white: {
+        pant: "Black",
+        watch: "Silver - Analog",
+        chain: "Gold",
+        shoes: "Brown Leather"
+      },
+      black: {
+        pant: "Grey",
+        watch: "Black - Digital",
+        chain: "Silver",
+        shoes: "Black Sneakers"
+      },
+      blue: {
+        pant: "Beige",
+        watch: "Brown - Analog",
+        chain: "Silver",
+        shoes: "White Sneakers"
+      },
+      red: {
+        pant: "Black",
+        watch: "Black - Digital",
+        chain: "Gold",
+        shoes: "Black Boots"
+      },
+      green: {
+        pant: "Khaki",
+        watch: "Brown - Leather",
+        chain: "Silver",
+        shoes: "Tan Loafers"
+      },
+      yellow: {
+        pant: "Navy Blue",
+        watch: "Silver - Analog",
+        chain: "Gold",
+        shoes: "White Sneakers"
+      },
+      grey: {
+        pant: "Black",
+        watch: "Black - Minimalist",
+        chain: "Black",
+        shoes: "Grey Trainers"
+      },
+      pink: {
+        pant: "White",
+        watch: "Rose Gold - Analog",
+        chain: "Silver",
+        shoes: "Beige Loafers"
+      },
+      maroon: {
+        pant: "Charcoal Grey",
+        watch: "Black - Chronograph",
+        chain: "Gold",
+        shoes: "Black Loafers"
+      },
+      orange: {
+        pant: "Navy Blue",
+        watch: "Silver - Sport",
+        chain: "Black",
+        shoes: "White Sneakers"
+      },
+      brown: {
+        pant: "Cream",
+        watch: "Leather Strap - Brown",
+        chain: "Gold",
+        shoes: "Dark Brown Boots"
+      },
+      "sky blue": {
+        pant: "White",
+        watch: "Silver - Minimalist",
+        chain: "Silver",
+        shoes: "Beige Loafers"
+      },
+      "navy blue": {
+        pant: "Grey",
+        watch: "Black - Classic",
+        chain: "Silver",
+        shoes: "Black Derbies"
+      },
+      olive: {
+        pant: "Brown",
+        watch: "Leather Strap - Green",
+        chain: "Bronze",
+        shoes: "Tan Boots"
+      },
+      lavender: {
+        pant: "White",
+        watch: "Rose Gold - Slim",
+        chain: "Silver",
+        shoes: "Pastel Sneakers"
+      },
+      teal: {
+        pant: "Beige",
+        watch: "Silver - Classic",
+        chain: "Silver",
+        shoes: "White Sneakers"
+      },
+      beige: {
+        pant: "Dark Brown",
+        watch: "Black - Leather",
+        chain: "Gold",
+        shoes: "Brown Loafers"
+      },
+      purple: {
+        pant: "Grey",
+        watch: "Silver - Vintage",
+        chain: "Black",
+        shoes: "Black Formal"
+      },
+      turquoise: {
+        pant: "Khaki",
+        watch: "Silver - Sport",
+        chain: "Silver",
+        shoes: "White Slip-ons"
+      },
+      cream: {
+        pant: "Navy Blue",
+        watch: "Gold - Analog",
+        chain: "Gold",
+        shoes: "Brown Monk Strap"
+      }
+    };
+
+    function getCombination() {
+      const input = document.getElementById('shirtColorInput').value.trim().toLowerCase();
+      const resultDiv = document.getElementById('result');
+      
+      if (combinations[input]) {
+        const combo = combinations[input];
+        document.getElementById('pantColor').innerText = combo.pant;
+        document.getElementById('watchColorType').innerText = combo.watch;
+        document.getElementById('chainColor').innerText = combo.chain;
+        document.getElementById('shoes').innerText = combo.shoes;
+        resultDiv.classList.remove('hidden');
+      } else {
+        alert("❌ No combination found for this shirt color.");
+        resultDiv.classList.add('hidden');
+      }
+    }
+  </script>
+</body>
+</html>
